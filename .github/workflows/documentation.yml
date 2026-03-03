@@ -26,7 +26,15 @@ jobs:
 
       - name: Install dependencies
         run: uv sync --all-extras 
-
+      - name: Debug - Look for app folder
+        run: |
+          echo "--- Emplacement actuel ---"
+          pwd
+          echo "--- Liste des fichiers à la racine ---"
+          ls -F
+          echo "--- Recherche du dossier app ---"
+          find . -maxdepth 2 -type d -name "app"
+          
       - name: Generate API skeleton
         run: |
           mkdir -p docs/source
