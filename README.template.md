@@ -9,8 +9,23 @@ Ce projet %REPO% est en version %VERSION% et appartient à %USER%.
 ### Liste des contributeurs
 [![Contributeurs](https://contrib.rocks/image?repo=%USER%/%REPO%)](https://github.com/%USER%/%REPO%/graphs/contributors)
 
+---
+
+## Automatisation du README
+
+Ce projet utilise un système de **README dynamique**. Ne modifiez pas directement le fichier `README.md`.
+
+### Comment ça marche ?
+1. Le fichier source est `README.template.md`.
+2. À chaque `git push`, une **GitHub Action** :
+   - Extrait la version depuis `pyproject.toml`.
+   - Remplace les marqueurs `%VERSION%`, `%USER%` et `%REPO%` par les valeurs réelles.
+   - Génère et commit le fichier `README.md` final.
+
+> **Note :** Si vous souhaitez modifier la présentation ou ajouter une section, faites-le dans **`README.template.md`**.
 
 ---
+
 ## 1. Structure du Template de Code
 
 Un projet doit être organisé de manière hermétique pour garantir la collaboration et la maintenance :
