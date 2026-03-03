@@ -172,7 +172,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -190,7 +190,11 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">MLObs2 documentation</a></li>
+</ul>
+
 </div>
 </div>
 
@@ -222,7 +226,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
@@ -232,7 +236,266 @@
 <p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
 documentation for details.</p>
+<section id="toobox-projet">
+<h2>Toobox projet<a class="headerlink" href="#toobox-projet" title="Link to this heading">¶</a></h2>
+<p>Ce projet utilise une suite d’outils modernes pour garantir la qualité du code, la robustesse des calculs et la clarté de la documentation technique.</p>
+<hr class="docutils" />
+<section id="structure-du-template-de-code">
+<h3>1. Structure du Template de Code<a class="headerlink" href="#structure-du-template-de-code" title="Link to this heading">¶</a></h3>
+<p>Un projet doit être organisé de manière hermétique pour garantir la collaboration et la maintenance :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── app/                   # Code source de l&#39;application
+├── tests/                 # Tests unitaires et d&#39;intégration (Pytest)
+├── docs/                  # Documentation technique (Sphinx/Furo)
+├── pyproject.toml         # Configuration centralisée des outils
+├── uv.lock                # Verrouillage des dépendances (généré par uv)
+├── Dockerfile             # Conteneurisation de l&#39;application
+└── README.md              # Vitrine du projet (Badges, Infos, Guide)
+
+</pre></div>
+</div>
+<p>Utilisez <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">init</span></code> pour initialiser le projet et <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">add</span> <span class="pre">x</span></code> pour ajouter les bibliothèques.
+<code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">x</span></code> (application ou test) pour executer en local.</p>
+</section>
+<hr class="docutils" />
+<section id="qualite-du-code-avec-ruff">
+<h3>2. Qualité du Code avec Ruff<a class="headerlink" href="#qualite-du-code-avec-ruff" title="Link to this heading">¶</a></h3>
+<p><strong>Ruff</strong> est notre linter et formateur de code ultra-rapide (écrit en Rust). Il remplace à lui seul Black, Isort et Flake8.</p>
+<p><strong>Rôle :</strong> Garantir une base de code homogène, lisible et détecter les erreurs potentielles (variables inutilisées, imports mal classés, etc.) avant l’exécution.</p>
+<section id="installation-dans-uv">
+<h4>Installation dans uv<a class="headerlink" href="#installation-dans-uv" title="Link to this heading">¶</a></h4>
+<p>Pour installer RUFF dans votre projet, utilisez la commande suivante :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>ruff
+</pre></div>
+</div>
+</section>
+<section id="configuration-pyproject-toml">
+<h4>2.1 Configuration (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)<a class="headerlink" href="#configuration-pyproject-toml" title="Link to this heading">¶</a></h4>
+<p>Pour confirurer que RUFF est uttilisé sur le projet, ajoutez la section suivante dans votre <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> :</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.ruff]</span>
+<span class="n">line-length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">88</span>
+<span class="n">target-version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;py311&quot;</span>
+
+<span class="k">[tool.ruff.lint]</span>
+<span class="n">select</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;W&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;I&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;D&quot;</span><span class="p">]</span><span class="w"> </span><span class="c1"># Erreurs, Warnings, Pyflakes, Isort, Docstrings</span>
+<span class="n">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;D100&quot;</span><span class="p">]</span><span class="w"> </span><span class="c1"># On autorise l&#39;absence de docstring en tout début de fichier</span>
+</pre></div>
+</div>
+</section>
+<section id="analyse-de-la-configuration-ruff-pyproject-toml">
+<h4>2.3 Analyse de la configuration Ruff (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)<a class="headerlink" href="#analyse-de-la-configuration-ruff-pyproject-toml" title="Link to this heading">¶</a></h4>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Code</p></th>
+<th class="head text-left"><p>Catégorie</p></th>
+<th class="head text-left"><p>Ce que Ruff vérifie</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>E</strong></p></td>
+<td class="text-left"><p><strong>Errors (PEP8)</strong></p></td>
+<td class="text-left"><p>Les erreurs de style (espaces, retours à la ligne, indentation).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>W</strong></p></td>
+<td class="text-left"><p><strong>Warnings (PEP8)</strong></p></td>
+<td class="text-left"><p>Les avertissements de style moins critiques.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>F</strong></p></td>
+<td class="text-left"><p><strong>Pyflakes</strong></p></td>
+<td class="text-left"><p>Les erreurs logiques (variables non définies, imports inutilisés).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>I</strong></p></td>
+<td class="text-left"><p><strong>Isort</strong></p></td>
+<td class="text-left"><p>Le tri alphabétique et le regroupement automatique des <code class="docutils literal notranslate"><span class="pre">import</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>D</strong></p></td>
+<td class="text-left"><p><strong>Pydocstyle</strong></p></td>
+<td class="text-left"><p>La présence et la qualité des docstrings (conventions PEP 257).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exceptions-configurees-ou-possibles-ignore">
+<h4>2.4 Exceptions configurées ou possibles : (<code class="docutils literal notranslate"><span class="pre">ignore</span></code>)<a class="headerlink" href="#exceptions-configurees-ou-possibles-ignore" title="Link to this heading">¶</a></h4>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Code</p></th>
+<th class="head text-left"><p>Règle ignorée</p></th>
+<th class="head text-left"><p>Raison habituelle</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>D100</strong></p></td>
+<td class="text-left"><p>Missing docstring in public module</p></td>
+<td class="text-left"><p>Évite d’avoir à écrire un résumé obligatoire tout en haut de chaque fichier <code class="docutils literal notranslate"><span class="pre">.py</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>D101</strong></p></td>
+<td class="text-left"><p>Missing docstring in public class</p></td>
+<td class="text-left"><p>Évite d’avoir à écrire une docstring pour chaque classe, surtout si elles sont auto-explicatives.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>D102</strong></p></td>
+<td class="text-left"><p>Missing docstring in public method</p></td>
+<td class="text-left"><p>Évite d’avoir à écrire une docstring pour chaque méthode, surtout si elles sont simples.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>D103</strong></p></td>
+<td class="text-left"><p>Missing docstring in public function</p></td>
+<td class="text-left"><p>Évite d’avoir à écrire une docstring pour chaque fonction, surtout si elles sont courtes.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>D104</strong></p></td>
+<td class="text-left"><p>Missing docstring in public package</p></td>
+<td class="text-left"><p>Évite d’avoir à écrire une docstring pour les packages (dossiers avec <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>D200</strong></p></td>
+<td class="text-left"><p>One-line docstring should fit on one line with quotes</p></td>
+<td class="text-left"><p>Permet les docstrings multi-lignes même pour les fonctions très courtes.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>D400</strong></p></td>
+<td class="text-left"><p>First line should end with a period</p></td>
+<td class="text-left"><p>Permet de ne pas mettre un point à la fin de la première ligne d’une docstring.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>D401</strong></p></td>
+<td class="text-left"><p>First line should be in imperative mood</p></td>
+<td class="text-left"><p>Permet de ne pas formuler la première ligne d’une docstring comme une commande (ex: “Calculate” au lieu de “Calculates”).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="commandes-de-maintenance">
+<h4>Commandes de maintenance<a class="headerlink" href="#commandes-de-maintenance" title="Link to this heading">¶</a></h4>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Action</p></th>
+<th class="head text-left"><p>Commande</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Vérifier</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Réparer</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">ruff</span> <span class="pre">check</span> <span class="pre">.</span> <span class="pre">--fix</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Formater</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">ruff</span> <span class="pre">format</span> <span class="pre">.</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="installation-de-sphynx-furo">
+<h3>3. Installation de Sphynx-Furo<a class="headerlink" href="#installation-de-sphynx-furo" title="Link to this heading">¶</a></h3>
+<section id="installation-des-dependances">
+<h4>3.1. Installation des dépendances<a class="headerlink" href="#installation-des-dependances" title="Link to this heading">¶</a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">add</span> <span class="p">-</span><span class="n">-dev</span> <span class="n">furo</span> <span class="n">myst_parser</span> <span class="n">sphinxcontrib-bibtex</span>
+</pre></div>
+</div>
+</section>
+<section id="initialisation">
+<h4>3.2. Initialisation<a class="headerlink" href="#initialisation" title="Link to this heading">¶</a></h4>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">docs</span>
+<span class="nb">cd </span><span class="n">docs</span>
+<span class="n">uv</span> <span class="n">run</span> <span class="n">sphinx-quickstart</span>
+<span class="c"># Répondre aux questions (Projet, Nom, Version)</span>
+<span class="nb">cd </span><span class="p">..</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-docs-source-conf-py">
+<h4>3.3. Configuration (<code class="docutils literal notranslate"><span class="pre">docs/source/conf.py</span></code>)<a class="headerlink" href="#configuration-docs-source-conf-py" title="Link to this heading">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;../../&#39;</span><span class="p">))</span>
+
+<span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;sphinx.ext.autodoc&#39;</span><span class="p">,</span>       <span class="c1"># INDISPENSABLE : extrait la doc des docstrings</span>
+    <span class="s1">&#39;sphinx.ext.napoleon&#39;</span><span class="p">,</span>      <span class="c1"># Supporte le format Google/NumPy (plus lisible)</span>
+    <span class="s1">&#39;sphinx.ext.viewcode&#39;</span><span class="p">,</span>      <span class="c1"># Ajoute un lien [source] à côté de tes fonctions</span>
+    <span class="s1">&#39;sphinx.ext.mathjax&#39;</span><span class="p">,</span>       <span class="c1"># Pour le rendu des formules LaTeX</span>
+    <span class="s1">&#39;myst_parser&#39;</span><span class="p">,</span>              <span class="c1"># Pour lire les fichiers .md (README, etc.)</span>
+    <span class="s1">&#39;sphinxcontrib.bibtex&#39;</span><span class="p">,</span>     <span class="c1"># Pour la gestion du fichier .bib</span>
+<span class="p">]</span>
+
+<span class="n">html_theme</span> <span class="o">=</span> <span class="s2">&quot;furo&quot;</span>
+<span class="n">bibtex_bibfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;refs.bib&#39;</span><span class="p">]</span>
+
+<span class="n">html_theme_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;light_css_variables&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;color-brand-primary&quot;</span><span class="p">:</span> <span class="s2">&quot;#7C4DFF&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;color-brand-content&quot;</span><span class="p">:</span> <span class="s2">&quot;#7C4DFF&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+</section>
+<section id="generer-automatiquement-les-rst">
+<h4>3.4 Générer automatiquement les rst<a class="headerlink" href="#generer-automatiquement-les-rst" title="Link to this heading">¶</a></h4>
+<p>Si vous voulez mettre à jour votre documentation en écrasant les anciens fichiers et en séparant bien chaque module sur sa propre page, utilisez ceci :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphinx-apidoc<span class="w"> </span>-f<span class="w"> </span>-e<span class="w"> </span>-o<span class="w"> </span>docs/source/<span class="w"> </span>./app
+</pre></div>
+</div>
+</section>
+<section id="compilation">
+<h4>3.4. Compilation<a class="headerlink" href="#compilation" title="Link to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>docs/source<span class="w"> </span>docs/public
+</pre></div>
+</div>
+</section>
+<section id="les-options-indispensables">
+<h4>Les options indispensables<a class="headerlink" href="#les-options-indispensables" title="Link to this heading">¶</a></h4>
+<p>Voici les options les plus utiles pour personnaliser votre génération :</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Option</p></th>
+<th class="head text-left"><p>Description</p></th>
+<th class="head text-left"><p>Utilité</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong><code class="docutils literal notranslate"><span class="pre">-o</span></code></strong> / <strong><code class="docutils literal notranslate"><span class="pre">--output-dir</span></code></strong></p></td>
+<td class="text-left"><p>Chemin du répertoire de destination.</p></td>
+<td class="text-left"><p>Indispensable pour séparer les fichiers <code class="docutils literal notranslate"><span class="pre">.rst</span></code> de votre code source.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong><code class="docutils literal notranslate"><span class="pre">-f</span></code></strong> / <strong><code class="docutils literal notranslate"><span class="pre">--force</span></code></strong></p></td>
+<td class="text-left"><p>Force l’écrasement des fichiers existants.</p></td>
+<td class="text-left"><p>À utiliser si vous avez renommé des fonctions ou des fichiers <code class="docutils literal notranslate"><span class="pre">.py</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong><code class="docutils literal notranslate"><span class="pre">-n</span></code></strong> / <strong><code class="docutils literal notranslate"><span class="pre">--dry-run</span></code></strong></p></td>
+<td class="text-left"><p>Simule la génération sans créer de fichiers.</p></td>
+<td class="text-left"><p>Pratique pour tester la commande sans risquer d’écraser vos fichiers.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong><code class="docutils literal notranslate"><span class="pre">-M</span></code></strong></p></td>
+<td class="text-left"><p>Met les modules avant les sous-packages.</p></td>
+<td class="text-left"><p>Change l’ordre d’affichage dans la table des matières.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong><code class="docutils literal notranslate"><span class="pre">--separate</span></code></strong></p></td>
+<td class="text-left"><p>Crée un fichier <code class="docutils literal notranslate"><span class="pre">.rst</span></code> distinct pour chaque module.</p></td>
+<td class="text-left"><p>Évite d’avoir un seul fichier immense si vous avez beaucoup de code.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong><code class="docutils literal notranslate"><span class="pre">-e</span></code></strong> / <strong><code class="docutils literal notranslate"><span class="pre">--separate</span></code></strong></p></td>
+<td class="text-left"><p>Met chaque module sur sa propre page.</p></td>
+<td class="text-left"><p>Rend la navigation plus fluide dans la documentation finale.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MLObs2 documentation</a></li>
+</ul>
 </div>
 </section>
 
@@ -261,8 +524,47 @@ documentation for details.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">MLObs2 documentation</a><ul>
+<li><a class="reference internal" href="#toobox-projet">Toobox projet</a><ul>
+<li><a class="reference internal" href="#structure-du-template-de-code">1. Structure du Template de Code</a></li>
+<li><a class="reference internal" href="#qualite-du-code-avec-ruff">2. Qualité du Code avec Ruff</a><ul>
+<li><a class="reference internal" href="#installation-dans-uv">Installation dans uv</a></li>
+<li><a class="reference internal" href="#configuration-pyproject-toml">2.1 Configuration (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)</a></li>
+<li><a class="reference internal" href="#analyse-de-la-configuration-ruff-pyproject-toml">2.3 Analyse de la configuration Ruff (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>)</a></li>
+<li><a class="reference internal" href="#exceptions-configurees-ou-possibles-ignore">2.4 Exceptions configurées ou possibles : (<code class="docutils literal notranslate"><span class="pre">ignore</span></code>)</a></li>
+<li><a class="reference internal" href="#commandes-de-maintenance">Commandes de maintenance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation-de-sphynx-furo">3. Installation de Sphynx-Furo</a><ul>
+<li><a class="reference internal" href="#installation-des-dependances">3.1. Installation des dépendances</a></li>
+<li><a class="reference internal" href="#initialisation">3.2. Initialisation</a></li>
+<li><a class="reference internal" href="#configuration-docs-source-conf-py">3.3. Configuration (<code class="docutils literal notranslate"><span class="pre">docs/source/conf.py</span></code>)</a></li>
+<li><a class="reference internal" href="#generer-automatiquement-les-rst">3.4 Générer automatiquement les rst</a></li>
+<li><a class="reference internal" href="#compilation">3.4. Compilation</a></li>
+<li><a class="reference internal" href="#les-options-indispensables">Les options indispensables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
