@@ -46,6 +46,9 @@ jobs:
           VERSION="${{ steps.get_version.outputs.PROJECT_VERSION }}"
           USER="${{ github.repository_owner }}"
           REPO="${{ github.event.repository.name }}"
+          
+          # On copie le template vers le vrai README avant de remplacer
+          cp README.template.md README.md
 
           # On remplace les marqueurs dans le fichier README.md
           sed -i "s/%VERSION%/$VERSION/g" README.md
