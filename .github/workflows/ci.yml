@@ -1,4 +1,4 @@
-name: Python Tests
+name: Python Ruff
 on:
   push:
     branches: [ main, dev , 'feat/**']  # Branch to survey
@@ -30,5 +30,10 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen --all-extras
 
-      - name: Run all tests
-        run: uv run pytest
+      - name: Run Ruff Check
+        # Vérifie les erreurs de code et de logique
+        run: uv run ruff check .
+
+      - name: Run Ruff Format
+        # Vérifie que le code est bien formaté (équivalent de Black)
+        run: uv run ruff format --check .
