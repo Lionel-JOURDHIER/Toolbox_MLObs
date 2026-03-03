@@ -38,5 +38,27 @@ jobs:
           echo "PROJECT_VERSION=$VERSION" >> $GITHUB_OUTPUT
           # Ajoute la version au résumé de l'action GitHub
           echo "### 🚀 Version du projet : v$VERSION" >> $GITHUB_STEP_SUMMARY
+          
+      # --- MISE À JOUR DU README ---
+      - name: Inject Variables into README
+        run: |
+          # Récupération des variables de contexte
+          USER=${{ github.repository_owner }}
+          REPO=${{ github.event.repository.name }}
+          VERSION=${{ steps.get_version.outputs.PROJECT_VERSION }}
+
+          # Remplacement dans le fichier (sed)
+          sed -i "s/%VERSION%/$VERSION/g" README.md
+          sed -i "s/%USER%/$USER/g" README.md
+          sed -i "s/%REPO%/$REPO/g" README.md
+
+      - name: Commit and Push README
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          # On commit seulement s'il y a des changements pour éviter de faire échouer la CI
+          git commit -m "docs: auto-update README variables [v${{ steps.get_version.outputs.PROJECT_VERSION }}]" || echo "No changes to commit"
+          git push
 
       
