@@ -7,6 +7,8 @@
 ### Liste des contributeurs
 [![Contributeurs](https://contrib.rocks/image?repo=Lionel-JOURDHIER/Toolbox_MLObs)](https://github.com/Lionel-JOURDHIER/Toolbox_MLObs/graphs/contributors)
 
+### Code of conduct
+[![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
 ---
 ## 1. Structure du Template de Code
