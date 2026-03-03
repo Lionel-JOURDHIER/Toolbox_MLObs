@@ -29,15 +29,33 @@ jobs:
 
       - name: Install dependencies
         run: uv sync --frozen --all-extras
-        
+
+      # --- EXTRACTION DE LA VERSION ---
+      - name: Extract Project Version
+        id: get_version
+        run: |
+          VERSION=$(grep -m 1 '^version = ' pyproject.toml | cut -d '"' -f 2)
+          echo "PROJECT_VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "### 🚀 Version du projet : v$VERSION" >> $GITHUB_STEP_SUMMARY
+
+      # --- MISE À JOUR DU README (C'est ici qu'on utilise la variable) ---
       - name: Inject Variables into README
         run: |
-          # Ces variables sont récupérées directement du contexte GitHub
-          USER=${{ github.repository_owner }}
-          REPO=${{ github.event.repository.name }}
-          VERSION=${{ steps.get_version.outputs.PROJECT_VERSION }}
+          # On récupère les valeurs pour les utiliser dans sed
+          # On utilise l'ID 'get_version' défini juste au-dessus
+          VERSION="${{ steps.get_version.outputs.PROJECT_VERSION }}"
+          USER="${{ github.repository_owner }}"
+          REPO="${{ github.event.repository.name }}"
 
-          # Le script cherche les % et les remplace par les vraies valeurs
+          # On remplace les marqueurs dans le fichier README.md
           sed -i "s/%VERSION%/$VERSION/g" README.md
           sed -i "s/%USER%/$USER/g" README.md
           sed -i "s/%REPO%/$REPO/g" README.md
+
+      - name: Commit and Push README
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "docs: auto-update variables to v${{ steps.get_version.outputs.PROJECT_VERSION }} [skip ci]" || echo "No changes"
+          git push
