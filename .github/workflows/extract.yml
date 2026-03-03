@@ -50,6 +50,7 @@ jobs:
           
           # On copie le template vers le vrai README avant de remplacer
           cp README.template.md README.md
+          cp .github/CODE_OF_CONDUCT.template.md .github/CODE_OF_CONDUCT.md
 
           # On remplace les marqueurs dans le fichier README.md
           sed -i "s/%VERSION%/$VERSION/g" README.md
@@ -57,8 +58,8 @@ jobs:
           sed -i "s/%REPO%/$REPO/g" README.md
 
           # Mise à jour du Code de Conduite (si tu as mis des marqueurs dedans)
-          sed -i "s/%EMAIL%/$EMAIL/g" CODE_OF_CONDUCT.md
-          sed -i "s/%REPO%/$REPO/g" CODE_OF_CONDUCT.md
+          sed -i "s/%EMAIL%/$EMAIL/g" .github/CODE_OF_CONDUCT.md
+          sed -i "s/%REPO%/$REPO/g" .github/CODE_OF_CONDUCT.md
 
       - name: Commit and Push README
         run: |
@@ -66,6 +67,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add README.md
           git add .github/CODE_OF_CONDUCT.md
-          
+
           git commit -m "docs: auto-update variables to v${{ steps.get_version.outputs.PROJECT_VERSION }} [skip ci]" || echo "No changes"
           git push
