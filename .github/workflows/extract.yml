@@ -1,4 +1,4 @@
-name: Python Ruff
+name: Extraction d'informations
 on:
   push:
     branches: [ main, dev , 'feat/**']  # Branch to survey
