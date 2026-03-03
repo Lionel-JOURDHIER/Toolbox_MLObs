@@ -57,12 +57,3 @@ Poussez votre branche sur GitHub et ouvrez une Pull Request. Décrivez clairemen
 
 6. **Attendre la revue de code et les commentaires**
 Un responsable (ou Lionel-JOURDHIER) examinera vos changements. Répondez aux commentaires et apportez les ajustements nécessaires avant le merge final.
-
-
-##Sécurité et Secrets
-
-Afin de protéger l'intégrité du projet, il est strictement interdit de pousser des secrets (clés API, mots de passe, emails personnels) dans le code source.
-
-1. **Utilisez des variables d'environnement** : En local, créez un fichier `.env` (déjà présent dans le `.gitignore`).
-2. **Secrets GitHub** : Pour les actions automatisées, les secrets doivent être configurés dans les paramètres du repo (`Settings > Secrets and variables`).
-3. **Audit avant commit** : Vérifiez toujours vos changements avec `git diff --cached` avant de valider.
