@@ -7,7 +7,6 @@
 ### Liste des contributeurs
 [![Contributeurs](https://contrib.rocks/image?repo=Lionel-JOURDHIER/Toolbox_MLObs)](https://github.com/Lionel-JOURDHIER/Toolbox_MLObs/graphs/contributors)
 
-> Version actuelle : `v0.1.0`
 
 ---
 ## 1. Structure du Template de Code
