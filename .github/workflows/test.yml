@@ -31,4 +31,19 @@ jobs:
         run: uv sync --frozen --all-extras
 
       - name: Run all tests
-        run: uv run pytest --cov=app --cov-report=term-missing > pytest_report.txt
+        run: |
+          # Exécution et capture
+          uv run pytest --cov=app --cov-report=term-missing --cov-report=json:coverage.json | tee pytest_report.txt
+          
+          # Extraction du % pour le step summary
+          COV_PERCENT=$(grep 'TOTAL' pytest_report.txt | awk '{print $NF}')
+          echo "## 📈 Résumé de Couverture : $COV_PERCENT" >> $GITHUB_STEP_SUMMARY
+          grep -A 10 "Name" pytest_report.txt >> $GITHUB_STEP_SUMMARY
+
+      - name: Archive Code Coverage Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: |
+            pytest_report.txt
+            htmlcov/
