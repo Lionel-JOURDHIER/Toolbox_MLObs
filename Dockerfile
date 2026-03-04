@@ -1,12 +1,12 @@
-# Image de python avec uv inclus
+# # Image de python avec uv inclus
 
-FROM ghcr.io/astral-sh/uv:python3.12-alpine
+# FROM ghcr.io/astral-sh/uv:python3.12-alpine
 
-# # 1. Image de base officielle Python Slim
-# FROM python:3.11-slim
+# 1. Image de base officielle Python Slim
+FROM python:3.11-slim
 
-# # 2. On récupère le binaire 'uv' depuis l'image officielle d'Astral
-# COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+# 2. On récupère le binaire 'uv' depuis l'image officielle d'Astral
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /src
 

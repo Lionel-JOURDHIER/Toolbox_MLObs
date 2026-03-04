@@ -4,7 +4,7 @@ services:
     # Remplace 'ton-pseudo' par ton login Docker Hub
     image: ${DOCKER_USER}/${DOCKER_CONTENEUR}:latest
     container_name: ${DOCKER_CONTENEUR}
-    restart: always
+    restart: always # si on ne veux pas que le main tourne en boucle : "no"
     ports:
       - "${APP_PORT:-80}:5000" # Accès web : port défini dans la80 du serveur -> port 5000 du conteneur
     environment:
@@ -17,8 +17,6 @@ services:
       driver: "json-file"
       options:
         max-size: "10m" # Limite la taille des fichiers de logs
-    volumes:
-      - ./data:/src/data
 
   # --- LE GARDIEN DU CD (Mise à jour automatique) ---
   watchtower:
