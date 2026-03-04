@@ -1,0 +1,46 @@
+name: CI/CD Production
+
+# Déclenche le script à chaque "git push" sur la branche main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Récupère ton code depuis GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Installe 'uv' sur la machine virtuelle de GitHub
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true # Accélère les futurs builds
+
+      # 3. Lance les tests (Pytest)
+      # Si cette étape échoue, le déploiement s'arrête immédiatement
+      - name: Run Tests
+        run: |
+          uv sync
+          uv run pytest
+
+      # 4. Connexion au Docker Hub (utilise tes Secrets GitHub)
+      - name: Login to Docker Hub
+        if: success()
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 5. Build l'image Docker et l'envoie sur le Hub
+      - name: Build and Push
+        if: success()
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Remplace par ton pseudo Docker Hub et ton nom d'image
+          tags: ton-pseudo/mon-app-python:latest

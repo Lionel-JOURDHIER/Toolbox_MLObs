@@ -1,0 +1,29 @@
+services:
+  # --- L'APPLICATION PYTHON ---
+  web-app:
+    # Remplace 'ton-pseudo' par ton login Docker Hub
+    image: ton-pseudo/mon-app-python:latest
+    container_name: flask-app
+    restart: always
+    ports:
+      - "80:5000" # Accès web : port 80 du serveur -> port 5000 du conteneur
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ENV=production
+    # On force la commande pour lancer ton paquet Python
+    command: ["uv", "run", "python", "-m", "app.main"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m" # Limite la taille des fichiers de logs
+
+  # --- LE GARDIEN DU CD (Mise à jour automatique) ---
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # --interval 300 : vérifie toutes les 5 min
+    # --cleanup : supprime les anciennes images pour gagner de la place
+    command: --interval 300 --cleanup flask-app
