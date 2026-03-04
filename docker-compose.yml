@@ -3,7 +3,7 @@ services:
   web-app:
     # Remplace 'ton-pseudo' par ton login Docker Hub
     image: ${DOCKER_USER}/${DOCKER_CONTENEUR}:latest
-    container_name: mon-conteneur
+    container_name: ${DOCKER_CONTENEUR}
     restart: always
     ports:
       - "${APP_PORT:-80}:5000" # Accès web : port défini dans la80 du serveur -> port 5000 du conteneur
@@ -18,8 +18,8 @@ services:
       options:
         max-size: "10m" # Limite la taille des fichiers de logs
     volumes:
-      - ./data:/app/app
-      
+      - ./data:/src/data
+
   # --- LE GARDIEN DU CD (Mise à jour automatique) ---
   watchtower:
     image: containrrr/watchtower
@@ -29,4 +29,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     # --interval 300 : vérifie toutes les 5 min
     # --cleanup : supprime les anciennes images pour gagner de la place
-    command: --interval 300 --cleanup mon-conteneur
+    command: --interval 300 --cleanup ${DOCKER_CONTENEUR}

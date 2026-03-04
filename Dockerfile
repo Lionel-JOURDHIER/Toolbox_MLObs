@@ -8,7 +8,7 @@ FROM ghcr.io/astral-sh/uv:python3.12-alpine
 # # 2. On récupère le binaire 'uv' depuis l'image officielle d'Astral
 # COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-WORKDIR /app
+WORKDIR /src
 
 # 4. Optimisation : on ne crée pas de fichiers .pyc et on force l'affichage des logs
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -23,6 +23,8 @@ RUN uv sync --frozen --no-dev --no-cache
 COPY . .
 
 EXPOSE 5000
+
+ENV PYTHONPATH=/src
 
 # Petit test rapide pour vérifier que pandas est là
 CMD ["uv", "run", "python", "-m", "app.main"]
