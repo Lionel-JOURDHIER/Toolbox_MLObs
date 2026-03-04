@@ -16,7 +16,6 @@ def get_values_from_csv(filepath: str) -> pd.DataFrame:
     Returns:
        pd.DataFrame: Un DataFrame contenant les données extraites du CSV.
     """
-    print(f"DEBUG: Le répertoire actuel est : {os.getcwd()}")
     return pd.read_csv(filepath)
 
 
